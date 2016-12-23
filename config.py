@@ -1,1 +1,1 @@
-NotesLocation = "Notes.txt"
+NotesLocation = "/Users/Afaks/GitHub/note-proj/notes.txt"
