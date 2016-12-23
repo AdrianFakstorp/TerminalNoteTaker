@@ -53,7 +53,7 @@ def ClearDoc():
                 file.write("")
             sys.exit()
         else:
-            "No notes have been cleared. "
+            "No notes have been cleared. Program Ending"
             sys.exit()
 
 
