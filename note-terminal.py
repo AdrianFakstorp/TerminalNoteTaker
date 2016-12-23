@@ -56,7 +56,18 @@ def ClearDoc():
             "No notes have been cleared. Program Ending"
             sys.exit()
 
+def TerminalPrint():
+    ArgParseForPrint = sys.argv[0].lower()
+    print "Passing here"
+    if ArgParseForPrint == "printnotes":
+        with open(NotesLocation, "r") as file:
+            print "Your Notes:\n%s" % file.read()
+        sys.exit()
+    else:
+        pass
+
 
 
 ClearDoc()
+TerminalPrint()
 NoteWrite(NoteToWrite)
