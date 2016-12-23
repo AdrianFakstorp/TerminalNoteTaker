@@ -1,0 +1,1 @@
+NotesLocation = "Notes.txt"
