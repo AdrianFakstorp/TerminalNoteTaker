@@ -58,7 +58,6 @@ def ClearDoc():
 
 def TerminalPrint():
     ArgParseForPrint = sys.argv[0].lower()
-    print "Passing here"
     if ArgParseForPrint == "printnotes":
         with open(NotesLocation, "r") as file:
             print "Your Notes:\n%s" % file.read()
