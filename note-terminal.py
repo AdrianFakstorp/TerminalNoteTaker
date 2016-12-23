@@ -3,23 +3,28 @@ import sys
 import datetime
 import time
 
-NotesLocation = cfg.NotesLocation
+
+#Functions Defined ---------
+
+def NoArgErrorCheck():
+    #Check if 0 args were provided
+    if len(sys.argv) == 1:
+        print "You have not written down anything."
+        sys.exit()
 
 def GetSysInput():
+    #Stripping to just the Note
     NoteInput = sys.argv
     NoteInput.remove(sys.argv[0])
     return NoteInput
 
-NoteInputRaw = GetSysInput()
-
 def FormatSysInput(NoteInputRaw):
+    #Format the list of arguments into a concatenated string
     NoteConcatenated = ""
     for item in NoteInputRaw:
         NoteConcatenated += "%s " % item
     NoteConcatenated = NoteConcatenated[:-1]
     return NoteConcatenated
-
-NoteConcatenated = FormatSysInput(NoteInputRaw)
 
 def GetDateTime():
     Time = time.time()
@@ -27,13 +32,10 @@ def GetDateTime():
     DateTimeVar = "[%s]" %DateTimeVar
     return DateTimeVar
 
-DateTimeVar = GetDateTime()
-
 def NoteReady(NoteConcatenated,DateTimeVar):
+    #Combining the note and the DateTime into a single string, making it ready to be written onto the .txt file
     NoteString = "%s\n%s\n\n" % (DateTimeVar,NoteConcatenated)
     return NoteString
-
-NoteToWrite = NoteReady(NoteConcatenated,DateTimeVar)
 
 def NoteWrite(NoteToWrite):
     with open(NotesLocation, 'r+') as file:
@@ -43,8 +45,8 @@ def NoteWrite(NoteToWrite):
     print "Writing \"%s\" to Notes" % NoteConcatenated
 
 def ClearDoc():
+    #Command to clear the .txt document
     ArgParseForClear = sys.argv[0].lower()
-    # print ArgParseForClear[0]
     if ArgParseForClear == "clearnotes":
         ClearCheck = raw_input("You have typed in \"clearnotes\", which is a command to clear your current notes. Please confirm by typing \"clearnotes\": ")
         if ClearCheck == "clearnotes":
@@ -57,6 +59,7 @@ def ClearDoc():
             sys.exit()
 
 def TerminalPrint():
+    #Command to print the .txt document
     ArgParseForPrint = sys.argv[0].lower()
     if ArgParseForPrint == "printnotes":
         with open(NotesLocation, "r") as file:
@@ -66,7 +69,15 @@ def TerminalPrint():
         pass
 
 
+#Variables --------------
+NotesLocation = cfg.NotesLocation
+NoArgErrorCheck()
+NoteInputRaw = GetSysInput()
+NoteConcatenated = FormatSysInput(NoteInputRaw)
+DateTimeVar = GetDateTime()
+NoteToWrite = NoteReady(NoteConcatenated,DateTimeVar)
 
+#Functions Called --------
 ClearDoc()
 TerminalPrint()
 NoteWrite(NoteToWrite)
