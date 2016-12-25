@@ -6,12 +6,34 @@ import time
 
 #Functions Defined ---------
 
+#Errors
 def NoArgErrorCheck():
     #Check if 0 args were provided
     if len(sys.argv) == 1:
         print "You have not written down anything."
         sys.exit()
 
+def configNotesLocationExistsCheck():
+    try:
+        from config import NotesLocation
+    except ImportError,ErrorMessage:
+        ErrorMessage = str(ErrorMessage)
+        if "cannot import name" in ErrorMessage:
+            print "Your \"NotesLocation\" variable seems to be missing from your config file. Please review and then try again."
+            sys.exit()
+
+def configNotesLocationFilePathCheck():
+    try:
+        with open (cfg.NotesLocation, "r+") as file:
+            return file
+    except IOError,ErrorMessage:
+        ErrorMessage = str(ErrorMessage)
+        if "[Errno 2] No such file or directory: '/Users/Afaks/GitHub/note-proj/notes'" in ErrorMessage:
+            print ErrorMessage
+            print "The file path you have put for NotesLocation in your config file does not exist. Please review and try again."
+            sys.exit()
+
+#Main Functions
 def GetSysInput():
     #Stripping to just the Note
     NoteInput = sys.argv
@@ -42,8 +64,10 @@ def NoteWrite(NoteToWrite):
         content = file.read()
         file.seek(0,0)
         file.write(NoteToWrite + content)
-    print "Writing \"%s\" to Notes" % NoteConcatenated
+    print "Wrote \"%s\" to Notes" % NoteConcatenated
 
+
+#Functions for specific word commands
 def ClearDoc():
     #Command to clear the .txt document
     ArgParseForClear = sys.argv[0].lower()
@@ -68,16 +92,23 @@ def TerminalPrint():
     else:
         pass
 
+#Functions Called --------
 
-#Variables --------------
+#Variables (via function call)
 NotesLocation = cfg.NotesLocation
-NoArgErrorCheck()
 NoteInputRaw = GetSysInput()
 NoteConcatenated = FormatSysInput(NoteInputRaw)
 DateTimeVar = GetDateTime()
 NoteToWrite = NoteReady(NoteConcatenated,DateTimeVar)
 
-#Functions Called --------
+#Error Checks
+NoArgErrorCheck
+configNotesLocationExistsCheck()
+configNotesLocationFilePathCheck()
+
+#Bonus Commands
 ClearDoc()
 TerminalPrint()
+
+#Main
 NoteWrite(NoteToWrite)
